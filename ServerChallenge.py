@@ -118,34 +118,124 @@
 # Level 2 --->
 ## Challenge 1: Rating comparator
 
-import requests
-from fastapi import FastAPI
+# import requests
+# from fastapi import FastAPI
 
-app = FastAPI()
-@app.get("/")
-def home():
-    return {"message": "Welcome to the Code Comparison Engine API!"}
+# app = FastAPI()
+# @app.get("/")
+# def home():
+#     return {"message": "Welcome to the Code Comparison Engine API!"}
 
-@app.get("/compare/{h1}/{h2}")
-def compare_rating(h1: str, h2: str):
-    url1 = f"https://codeforces.com/api/user.info?handles={h1}"
-    url2 = f"https://codeforces.com/api/user.info?handles={h2}"
+# @app.get("/compare/{h1}/{h2}")
+# def compare_rating(h1: str, h2: str):
+#     url1 = f"https://codeforces.com/api/user.info?handles={h1}"
+#     url2 = f"https://codeforces.com/api/user.info?handles={h2}"
     
-    response1 = requests.get(url1)
-    response2 = requests.get(url2)
+#     response1 = requests.get(url1)
+#     response2 = requests.get(url2)
     
-    if response1.status_code == 200 and response2.status_code == 200:
-        data1 = response1.json()
-        data2 = response2.json()
+#     if response1.status_code == 200 and response2.status_code == 200:
+#         data1 = response1.json()
+#         data2 = response2.json()
         
-        rating1 = data1["result"][0]["rating"]
-        rating2 = data2["result"][0]["rating"]
+#         rating1 = data1["result"][0]["rating"]
+#         rating2 = data2["result"][0]["rating"]
         
-        if rating1 > rating2:
-            return {f"{h1} has a higher rating than {h2}"}
-        elif rating1 < rating2:
-            return {f"{h2} has a higher rating than {h1}"}
-        else:
-            return {"Both users have the same rating"}
-    else:
-        return {"error": "Failed to fetch data. Please check the usernames and try again."}
+#         if rating1 > rating2:
+#             return {f"{h1} has a higher rating than {h2}"}
+#         elif rating1 < rating2:
+#             return {f"{h2} has a higher rating than {h1}"}
+#         else:
+#             return {"Both users have the same rating"}
+#     else:
+#         return {"error": "Failed to fetch data. Please check the usernames and try again."}
+
+## Challenge 2: Contest Rating Hystory
+
+# import requests
+# from fastapi import FastAPI
+
+# app = FastAPI()
+
+# @app.get("/")
+# def home():
+#     return {"message": "Welcome to the Code Comparison Engine API!"}
+
+# @app.get("/rating_history/{handle}")
+# def get_rating_history(handle: str):
+#     url = f"https://codeforces.com/api/user.rating?handle={handle}"
+#     response = requests.get(url)
+    
+#     if response.status_code == 200:
+#         data = response.json()
+#         contest_count = len(data["result"])
+        
+#         if contest_count == 0:
+#             return {"message": "This user has not participated in any contests."}
+        
+#         if contest_count>=5:
+#             worst = 0
+#             best = 0
+#             mini = 10**18
+#             maxi= -10**18
+#             for i in range(4, contest_count):
+#                 rating_diff = data["result"][i]["newRating"] - data["result"][i]["oldRating"]
+#                 if rating_diff < mini:
+#                     mini = rating_diff
+#                     worst = i
+#                 if rating_diff > maxi:
+#                     maxi = rating_diff
+#                     best = i
+                
+#             wcoid = data["result"][worst]["contestId"]
+#             bcoid = data["result"][best]["contestId"]
+#             wcoName = data["result"][worst]["contestName"]
+#             bcoName = data["result"][best]["contestName"]
+                
+#             return {
+#                 "worst_contest": {
+#                     "contest_id": wcoid,
+#                     "contest_name": wcoName,
+#                     "rating_change": mini
+#                 },
+#                 "best_contest": {
+#                     "contest_id": bcoid,
+#                     "contest_name": bcoName,
+#                     "rating_change": maxi
+#                 }
+#             }         
+            
+#         else:
+#             worst = 0
+#             best = 0
+#             mini = 10**18
+#             maxi = -10**18
+#             for i in range(contest_count):
+#                 rating_diff = data["result"][i]["newRating"] - data["result"][i]["oldRating"]
+#                 if rating_diff < mini:
+#                     mini = rating_diff
+#                     worst = i
+#                 if rating_diff > maxi:
+#                     maxi = rating_diff
+#                     best = i
+                
+#             wcoid = data["result"][worst]["contestId"]
+#             bcoid = data["result"][best]["contestId"]
+#             wcoName = data["result"][worst]["contestName"]
+#             bcoName = data["result"][best]["contestName"]
+                
+#             return {
+#                 "worst_contest": {
+#                     "contest_id": wcoid,
+#                     "contest_name": wcoName,
+#                     "rating_change": mini
+#                 },
+#                 "best_contest": {
+#                     "contest_id": bcoid,
+#                     "contest_name": bcoName,
+#                     "rating_change": maxi
+#                 }
+#             }
+            
+#     else:
+#         return {"error": "Failed to fetch data. Please check the username and try again."}
